@@ -1,199 +1,151 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>استعلام رواتب الموظفين</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>استعلام عن الراتب - Smart Schools</title>
   <style>
-    :root {
-      --bg1: #071a52;
-      --bg2: #0b64d6;
-      --card: #ffffff;
-      --muted: #b0c4de;
-      --accent: #ffd166;
-    }
-
-    * {
-      box-sizing: border-box;
-      font-family: 'Cairo', sans-serif;
-    }
-
     body {
       margin: 0;
-      min-height: 100vh;
-      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #007bff, #00c6ff);
       display: flex;
-      align-items: center;
       justify-content: center;
-      padding: 20px;
+      align-items: center;
+      height: 100vh;
       color: #fff;
     }
 
-    .card {
-      width: 100%;
-      max-width: 900px;
-      background: rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      padding: 24px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-      backdrop-filter: blur(6px);
+    .container {
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
     }
 
     h1 {
-      text-align: center;
       margin-bottom: 20px;
-      color: #fff;
+      font-size: 1.5em;
     }
 
-    label {
-      font-weight: 600;
-      display: block;
-      margin-top: 12px;
-      margin-bottom: 6px;
-      color: #eaf2ff;
+    .card {
+      background: #fff;
+      color: #333;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
     input {
       width: 100%;
-      padding: 12px;
+      padding: 10px;
+      margin: 10px 0;
       border-radius: 8px;
-      border: none;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-size: 15px;
-      outline: none;
+      border: 1px solid #ccc;
+      font-family: inherit;
+      font-size: 1em;
+      text-align: center;
     }
 
     button {
-      width: 100%;
-      margin-top: 14px;
-      padding: 12px;
+      background: #007bff;
+      color: #fff;
+      padding: 10px 20px;
       border: none;
       border-radius: 8px;
-      background: linear-gradient(90deg, var(--bg2), #1a9cff);
-      color: #fff;
-      font-weight: 700;
+      font-size: 1em;
       cursor: pointer;
       transition: 0.3s;
     }
 
     button:hover {
-      opacity: 0.9;
+      background: #0056b3;
     }
 
     .result {
-      margin-top: 24px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 10px;
-      padding: 14px;
       display: none;
+      background: #fff;
+      color: #333;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: right;
+      line-height: 1.8;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      font-size: 0.95em;
     }
 
-    .r-row {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      padding: 8px 0;
+    .error {
+      color: #ff4444;
+      margin-top: 10px;
     }
 
-    .r-label {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .r-value {
-      font-weight: 600;
-      font-size: 15px;
-    }
-
-    @media (max-width: 600px) {
-      .r-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .r-label {
-        margin-bottom: 4px;
-      }
+    @media (max-width: 480px) {
+      h1 { font-size: 1.3em; }
+      input, button { font-size: 0.9em; }
     }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>💼 استعلام رواتب الموظفين</h1>
-    <label for="nid">الرقم القومي</label>
-    <input id="nid" type="text" placeholder="أدخل الرقم القومي" maxlength="14">
-    <button id="searchBtn">عرض الراتب</button>
-
-    <div id="result" class="result">
-      <div class="r-row"><div class="r-label">الاسم</div><div class="r-value" id="r-name">—</div></div>
-      <div class="r-row"><div class="r-label">الراتب</div><div class="r-value" id="r-salary">—</div></div>
-      <div class="r-row"><div class="r-label">تأمينات اجتماعية</div><div class="r-value" id="r-social">—</div></div>
-      <div class="r-row"><div class="r-label">الاضافي</div><div class="r-value" id="r-extra">—</div></div>
-      <div class="r-row"><div class="r-label">نسبة المباشرة</div><div class="r-value" id="r-direct">—</div></div>
-      <div class="r-row"><div class="r-label">الحوافز</div><div class="r-value" id="r-bonus">—</div></div>
-      <div class="r-row"><div class="r-label">قيمة أيام الغياب</div><div class="r-value" id="r-absence">—</div></div>
-      <div class="r-row"><div class="r-label">قيمة جزاء الغياب</div><div class="r-value" id="r-penalty">—</div></div>
-      <div class="r-row"><div class="r-label">الضرائب الإجمالية</div><div class="r-value" id="r-tax">—</div></div>
-      <div class="r-row"><div class="r-label">الانتقالات</div><div class="r-value" id="r-transport">—</div></div>
-      <div class="r-row"><div class="r-label">بدل انتظام</div><div class="r-value" id="r-attendance">—</div></div>
-      <div class="r-row"><div class="r-label">بدل إشراف</div><div class="r-value" id="r-supervision">—</div></div>
-      <div class="r-row"><div class="r-label">بدل طبيعة عمل</div><div class="r-value" id="r-nature">—</div></div>
-      <div class="r-row"><div class="r-label">بدل وردية</div><div class="r-value" id="r-shift">—</div></div>
-      <div class="r-row"><div class="r-label">مكافأة</div><div class="r-value" id="r-reward">—</div></div>
-      <div class="r-row"><div class="r-label">كشف طبي</div><div class="r-value" id="r-medical">—</div></div>
-      <div class="r-row"><div class="r-label">الإجمالي</div><div class="r-value" id="r-total">—</div></div>
+  <div class="container">
+    <h1>💼 استعلام عن الراتب</h1>
+    <div class="card">
+      <input type="text" id="nid" placeholder="أدخل الرقم القومي" maxlength="14">
+      <button id="checkBtn">عرض التفاصيل</button>
+      <div class="error" id="errorMsg"></div>
+      <div class="result" id="resultBox"></div>
     </div>
   </div>
 
   <script>
-    const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxE56qjcb1UKWDq1EVHqQncN2pSH2UxWJ89wOlLOzQ/exec';
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxE56qjcb1UKWDq1EVHqQncN2pSH2UxWJ89wOlLOzQ/dev";
+    const btn = document.getElementById("checkBtn");
+    const resultBox = document.getElementById("resultBox");
+    const errorMsg = document.getElementById("errorMsg");
 
-    const searchBtn = document.getElementById('searchBtn');
-    const nidInput = document.getElementById('nid');
-    const resultBox = document.getElementById('result');
-
-    async function fetchEmployee() {
-      const nid = nidInput.value.trim();
-      if (!nid) return alert("من فضلك أدخل الرقم القومي");
-
-      try {
-        const res = await fetch(`${APP_SCRIPT_URL}?national_id=${encodeURIComponent(nid)}`);
-        const data = await res.json();
-
-        if (!data.success) {
-          alert(data.error || "لم يتم العثور على الموظف");
-          resultBox.style.display = "none";
-          return;
-        }
-
-        const e = data.employee;
-        document.getElementById('r-name').textContent = e['الاسم'] || '-';
-        document.getElementById('r-salary').textContent = e['الراتب'] || '-';
-        document.getElementById('r-social').textContent = e['تأمينات اجتماعية'] || '-';
-        document.getElementById('r-extra').textContent = e['الاضافي'] || '-';
-        document.getElementById('r-direct').textContent = e['نسبه المباشرة'] || '-';
-        document.getElementById('r-bonus').textContent = e['الحوافز'] || '-';
-        document.getElementById('r-absence').textContent = e['قيمة ايام الغياب'] || '-';
-        document.getElementById('r-penalty').textContent = e['قيمة جزاء الغياب'] || '-';
-        document.getElementById('r-tax').textContent = e['الضرائب الاجمالية'] || '-';
-        document.getElementById('r-transport').textContent = e['الانتقالات'] || '-';
-        document.getElementById('r-attendance').textContent = e['بدل انتظام'] || '-';
-        document.getElementById('r-supervision').textContent = e['بدل اشراف'] || '-';
-        document.getElementById('r-nature').textContent = e['بدل طبيعة عمل'] || '-';
-        document.getElementById('r-shift').textContent = e['بدل وردية'] || '-';
-        document.getElementById('r-reward').textContent = e['مكافأه'] || '-';
-        document.getElementById('r-medical').textContent = e['كشف طبي'] || '-';
-        document.getElementById('r-total').textContent = e['الاجمالي'] || '-';
-
-        resultBox.style.display = "block";
-      } catch (err) {
-        console.error(err);
-        alert("حدث خطأ في الاتصال، جرب مرة أخرى.");
+    btn.addEventListener("click", () => {
+      const nid = document.getElementById("nid").value.trim();
+      if (!nid) {
+        errorMsg.textContent = "من فضلك أدخل الرقم القومي";
+        resultBox.style.display = "none";
+        return;
       }
-    }
 
-    searchBtn.addEventListener('click', fetchEmployee);
+      errorMsg.textContent = "جارٍ البحث...";
+      resultBox.style.display = "none";
+
+      fetch(`${scriptURL}?national_id=${nid}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            errorMsg.textContent = "لم يتم العثور على بيانات لهذا الرقم.";
+          } else {
+            errorMsg.textContent = "";
+            resultBox.innerHTML = `
+              <strong>الاسم:</strong> ${data.name || '-'}<br>
+              <strong>الراتب:</strong> ${data.salary || '-'}<br>
+              <strong>تأمينات اجتماعية:</strong> ${data.social_insurance || '-'}<br>
+              <strong>الإضافي:</strong> ${data.extra || '-'}<br>
+              <strong>نسبة المباشرة:</strong> ${data.attendance_ratio || '-'}<br>
+              <strong>الحوافز:</strong> ${data.incentives || '-'}<br>
+              <strong>قيمة أيام الغياب:</strong> ${data.absence_days_value || '-'}<br>
+              <strong>جزاء الغياب:</strong> ${data.absence_penalty || '-'}<br>
+              <strong>الضرائب الإجمالية:</strong> ${data.total_taxes || '-'}<br>
+              <strong>الانتقالات:</strong> ${data.transportation || '-'}<br>
+              <strong>بدل انتظام:</strong> ${data.attendance_allowance || '-'}<br>
+              <strong>بدل إشراف:</strong> ${data.supervision_allowance || '-'}<br>
+              <strong>بدل طبيعة عمل:</strong> ${data.work_nature_allowance || '-'}<br>
+              <strong>بدل وردية:</strong> ${data.shift_allowance || '-'}<br>
+              <strong>كشف طبي:</strong> ${data.medical_check || '-'}<br>
+              <strong>الإجمالي:</strong> ${data.total || '-'}
+            `;
+            resultBox.style.display = "block";
+          }
+        })
+        .catch(err => {
+          errorMsg.textContent = "حدث خطأ أثناء الاتصال. حاول مرة أخرى.";
+          console.error(err);
+        });
+    });
   </script>
 </body>
 </html>
