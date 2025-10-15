@@ -1,51 +1,46 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>عرض بيانات الراتب</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>عرض بيانات الموظف</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap');
 
     body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
       margin: 0;
       padding: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
       color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
     }
-
     .container {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(6px);
-      padding: 25px 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       width: 100%;
       max-width: 420px;
-      text-align: center;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(6px);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.3);
     }
-
     h1 {
-      font-size: 22px;
+      text-align: center;
       margin-bottom: 20px;
+      font-size: 22px;
     }
-
     input {
       width: 100%;
       padding: 12px;
       border: none;
       border-radius: 8px;
-      margin-bottom: 10px;
-      font-family: inherit;
+      margin-bottom: 12px;
       font-size: 15px;
       box-sizing: border-box;
     }
-
     button {
       width: 100%;
       padding: 12px;
@@ -54,123 +49,120 @@
       border-radius: 8px;
       color: #fff;
       font-size: 16px;
-      font-weight: bold;
       cursor: pointer;
       transition: 0.3s;
     }
-
     button:hover {
       background: #45a049;
     }
-
-    .salary-card {
+    .card {
       margin-top: 20px;
       background: #fff;
       color: #333;
-      border-radius: 10px;
       padding: 15px;
-      text-align: right;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+      display: none;
       animation: fadeIn 0.5s ease-in-out;
     }
-
-    .salary-card h2 {
+    .card h2 {
+      margin-top: 0;
       font-size: 18px;
+      color: #1e3c72;
       border-bottom: 2px solid #4caf50;
-      padding-bottom: 5px;
-      margin-bottom: 10px;
-      color: #2a5298;
+      padding-bottom: 8px;
+      margin-bottom: 12px;
     }
-
-    .salary-item {
+    .item {
       display: flex;
       justify-content: space-between;
       padding: 6px 0;
       border-bottom: 1px solid #eee;
       font-size: 15px;
     }
-
-    .salary-item:last-child {
+    .item:last-child {
       border-bottom: none;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     @media (max-width: 480px) {
-      .container {
-        padding: 20px 15px;
-      }
-
-      h1 {
-        font-size: 20px;
-      }
-
-      .salary-item {
-        font-size: 14px;
-      }
+      h1 { font-size: 20px; }
+      .item { font-size: 14px; }
+      .container { padding: 18px; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>💼 عرض بيانات الراتب</h1>
-    <input type="text" id="nationalId" placeholder="ادخل الرقم القومي" maxlength="14">
-    <button onclick="showSalary()">عرض البيانات</button>
+    <h1>بيانات الموظف</h1>
+    <input type="text" id="nid" placeholder="أدخل الرقم القومي">
+    <button id="showBtn">عرض البيانات</button>
 
-    <div id="salaryData" class="salary-card" style="display:none;">
-      <h2>بيانات الموظف</h2>
-      <div class="salary-item"><span>الاسم:</span><span id="empName">---</span></div>
-      <div class="salary-item"><span>الراتب:</span><span id="salary">---</span></div>
-      <div class="salary-item"><span>تأمينات اجتماعية:</span><span id="insurance">---</span></div>
-      <div class="salary-item"><span>الإضافي:</span><span id="extra">---</span></div>
-      <div class="salary-item"><span>نسبة المباشرة:</span><span id="directRatio">---</span></div>
-      <div class="salary-item"><span>الحوافز:</span><span id="bonus">---</span></div>
-      <div class="salary-item"><span>قيمة أيام الغياب:</span><span id="absenceDays">---</span></div>
-      <div class="salary-item"><span>جزاء الغياب:</span><span id="absencePenalty">---</span></div>
-      <div class="salary-item"><span>الضرائب الإجمالية:</span><span id="taxes">---</span></div>
-      <div class="salary-item"><span>الانتقالات:</span><span id="transport">---</span></div>
-      <div class="salary-item"><span>بدل انتظام:</span><span id="attendanceAllowance">---</span></div>
-      <div class="salary-item"><span>بدل إشراف:</span><span id="supervisionAllowance">---</span></div>
-      <div class="salary-item"><span>بدل طبيعة عمل:</span><span id="workNatureAllowance">---</span></div>
-      <div class="salary-item"><span>بدل وردية:</span><span id="shiftAllowance">---</span></div>
-      <div class="salary-item"><span>مكافأة:</span><span id="reward">---</span></div>
-      <div class="salary-item"><span>كشف طبي:</span><span id="medicalCheck">---</span></div>
-      <div class="salary-item"><strong>الإجمالي:</strong><strong id="total">---</strong></div>
+    <div class="card" id="card">
+      <h2>معلومات الراتب</h2>
+      <div class="item"><span>الاسم:</span><span id="name">-</span></div>
+      <div class="item"><span>الراتب:</span><span id="salary">-</span></div>
+      <div class="item"><span>تأمينات اجتماعية:</span><span id="insurance">-</span></div>
+      <div class="item"><span>الإضافي:</span><span id="overtime">-</span></div>
+      <div class="item"><span>نسبة المباشرة:</span><span id="attendance_rate">-</span></div>
+      <div class="item"><span>الحوافز:</span><span id="incentives">-</span></div>
+      <div class="item"><span>قيمة أيام الغياب:</span><span id="absence_days_value">-</span></div>
+      <div class="item"><span>جزاء الغياب:</span><span id="absence_penalty">-</span></div>
+      <div class "item"><span>الضرائب الإجمالية:</span><span id="total_taxes">-</span></div>
+      <div class="item"><span>الانتقالات:</span><span id="transport">-</span></div>
+      <div class="item"><span>بدل انتظام:</span><span id="regularity_allowance">-</span></div>
+      <div class="item"><span>بدل إشراف:</span><span id="supervision_allowance">-</span></div>
+      <div class="item"><span>بدل طبيعة عمل:</span><span id="nature_allowance">-</span></div>
+      <div class="item"><span>بدل وردية:</span><span id="shift_allowance">-</span></div>
+      <div class="item"><span>مكافأة:</span><span id="bonus">-</span></div>
+      <div class="item"><span>كشف طبي:</span><span id="medical_check">-</span></div>
+      <div class="item"><strong>الإجمالي:</strong><strong id="total">-</strong></div>
     </div>
   </div>
 
   <script>
-    function showSalary() {
-      const nid = document.getElementById("nationalId").value.trim();
+    document.getElementById("showBtn").addEventListener("click", async () => {
+      const nid = document.getElementById("nid").value.trim();
       if (!nid) {
-        alert("من فضلك أدخل الرقم القومي أولاً");
+        alert("من فضلك أدخل الرقم القومي");
         return;
       }
 
-      // هنا مؤقتًا هنظهر بيانات وهمية (هنربطها بالشيت بعدين)
-      document.getElementById("empName").textContent = "أحمد محمد علي";
-      document.getElementById("salary").textContent = "10000";
-      document.getElementById("insurance").textContent = "750";
-      document.getElementById("extra").textContent = "500";
-      document.getElementById("directRatio").textContent = "95%";
-      document.getElementById("bonus").textContent = "800";
-      document.getElementById("absenceDays").textContent = "0";
-      document.getElementById("absencePenalty").textContent = "0";
-      document.getElementById("taxes").textContent = "500";
-      document.getElementById("transport").textContent = "300";
-      document.getElementById("attendanceAllowance").textContent = "200";
-      document.getElementById("supervisionAllowance").textContent = "150";
-      document.getElementById("workNatureAllowance").textContent = "250";
-      document.getElementById("shiftAllowance").textContent = "400";
-      document.getElementById("reward").textContent = "1000";
-      document.getElementById("medicalCheck").textContent = "0";
-      document.getElementById("total").textContent = "12750";
+      try {
+        const resp = await fetch(`https://script.google.com/macros/s/AKfycbxHxkBf9W_KGMCLZZkPtyS17LQdhu6yVAWXQ0SQdXUQFxnGsFEkGb1HeF-5ofKjVUAc/exec?national_id=${encodeURIComponent(nid)}`);
+        const data = await resp.json();
 
-      document.getElementById("salaryData").style.display = "block";
-    }
+        if (data.error) {
+          alert(data.error);
+          return;
+        }
+
+        document.getElementById("card").style.display = "block";
+        document.getElementById("name").textContent = data.name || "-";
+        document.getElementById("salary").textContent = data.salary || "-";
+        document.getElementById("insurance").textContent = data.social_insurance || "-";
+        document.getElementById("overtime").textContent = data.overtime || "-";
+        document.getElementById("attendance_rate").textContent = data.attendance_rate || "-";
+        document.getElementById("incentives").textContent = data.incentives || "-";
+        document.getElementById("absence_days_value").textContent = data.absence_days_value || "-";
+        document.getElementById("absence_penalty").textContent = data.absence_penalty || "-";
+        document.getElementById("total_taxes").textContent = data.total_taxes || "-";
+        document.getElementById("transport").textContent = data.transport || "-";
+        document.getElementById("regularity_allowance").textContent = data.regularity_allowance || "-";
+        document.getElementById("supervision_allowance").textContent = data.supervision_allowance || "-";
+        document.getElementById("nature_allowance").textContent = data.nature_allowance || "-";
+        document.getElementById("shift_allowance").textContent = data.shift_allowance || "-";
+        document.getElementById("bonus").textContent = data.bonus || "-";
+        document.getElementById("medical_check").textContent = data.medical_check || "-";
+        document.getElementById("total").textContent = data.total || "-";
+
+      } catch (err) {
+        console.error("خطأ في جلب البيانات:", err);
+        alert("حدث خطأ في الاتصال، جرب مرة أخرى.");
+      }
+    });
   </script>
 </body>
 </html>
