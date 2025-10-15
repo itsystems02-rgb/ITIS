@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عرض بيانات الراتب</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap');
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      margin: 0;
+      padding: 0;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(6px);
+      padding: 25px 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      font-family: inherit;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4caf50;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    .salary-card {
+      margin-top: 20px;
+      background: #fff;
+      color: #333;
+      border-radius: 10px;
+      padding: 15px;
+      text-align: right;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .salary-card h2 {
+      font-size: 18px;
+      border-bottom: 2px solid #4caf50;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+      color: #2a5298;
+    }
+
+    .salary-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 15px;
+    }
+
+    .salary-item:last-child {
+      border-bottom: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 20px 15px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .salary-item {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💼 عرض بيانات الراتب</h1>
+    <input type="text" id="nationalId" placeholder="ادخل الرقم القومي" maxlength="14">
+    <button onclick="showSalary()">عرض البيانات</button>
+
+    <div id="salaryData" class="salary-card" style="display:none;">
+      <h2>بيانات الموظف</h2>
+      <div class="salary-item"><span>الاسم:</span><span id="empName">---</span></div>
+      <div class="salary-item"><span>الراتب:</span><span id="salary">---</span></div>
+      <div class="salary-item"><span>تأمينات اجتماعية:</span><span id="insurance">---</span></div>
+      <div class="salary-item"><span>الإضافي:</span><span id="extra">---</span></div>
+      <div class="salary-item"><span>نسبة المباشرة:</span><span id="directRatio">---</span></div>
+      <div class="salary-item"><span>الحوافز:</span><span id="bonus">---</span></div>
+      <div class="salary-item"><span>قيمة أيام الغياب:</span><span id="absenceDays">---</span></div>
+      <div class="salary-item"><span>جزاء الغياب:</span><span id="absencePenalty">---</span></div>
+      <div class="salary-item"><span>الضرائب الإجمالية:</span><span id="taxes">---</span></div>
+      <div class="salary-item"><span>الانتقالات:</span><span id="transport">---</span></div>
+      <div class="salary-item"><span>بدل انتظام:</span><span id="attendanceAllowance">---</span></div>
+      <div class="salary-item"><span>بدل إشراف:</span><span id="supervisionAllowance">---</span></div>
+      <div class="salary-item"><span>بدل طبيعة عمل:</span><span id="workNatureAllowance">---</span></div>
+      <div class="salary-item"><span>بدل وردية:</span><span id="shiftAllowance">---</span></div>
+      <div class="salary-item"><span>مكافأة:</span><span id="reward">---</span></div>
+      <div class="salary-item"><span>كشف طبي:</span><span id="medicalCheck">---</span></div>
+      <div class="salary-item"><strong>الإجمالي:</strong><strong id="total">---</strong></div>
+    </div>
+  </div>
+
+  <script>
+    function showSalary() {
+      const nid = document.getElementById("nationalId").value.trim();
+      if (!nid) {
+        alert("من فضلك أدخل الرقم القومي أولاً");
+        return;
+      }
+
+      // هنا مؤقتًا هنظهر بيانات وهمية (هنربطها بالشيت بعدين)
+      document.getElementById("empName").textContent = "أحمد محمد علي";
+      document.getElementById("salary").textContent = "10000";
+      document.getElementById("insurance").textContent = "750";
+      document.getElementById("extra").textContent = "500";
+      document.getElementById("directRatio").textContent = "95%";
+      document.getElementById("bonus").textContent = "800";
+      document.getElementById("absenceDays").textContent = "0";
+      document.getElementById("absencePenalty").textContent = "0";
+      document.getElementById("taxes").textContent = "500";
+      document.getElementById("transport").textContent = "300";
+      document.getElementById("attendanceAllowance").textContent = "200";
+      document.getElementById("supervisionAllowance").textContent = "150";
+      document.getElementById("workNatureAllowance").textContent = "250";
+      document.getElementById("shiftAllowance").textContent = "400";
+      document.getElementById("reward").textContent = "1000";
+      document.getElementById("medicalCheck").textContent = "0";
+      document.getElementById("total").textContent = "12750";
+
+      document.getElementById("salaryData").style.display = "block";
+    }
+  </script>
+</body>
+</html>
